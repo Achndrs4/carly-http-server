@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo
+    container_name: carly-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb_tmp:/data/db
+      - ./data/01_create_collection.js:/docker-entrypoint-initdb.d/01_create_collection.js:ro
+      - ./data/02_insert_data.js:/docker-entrypoint-initdb.d/02_insert_data.js:ro
+      - ./data/customer_export.jsonl:/docker-entrypoint-initdb.d/customer_export.jsonl
+    environment:
+      - MONGO_INITDB_DATABASE=customers
+      - DATA_PATH=/docker-entrypoint-initdb.d/customer_export.jsonl
+      - COLLECTION_NAME=users
+
